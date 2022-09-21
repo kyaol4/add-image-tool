@@ -1,18 +1,43 @@
 import tkinter.ttk as ttk
 from tkinter import *
+from tkinter import filedialog
 
 root = Tk()
 root.title("Add Image Tool")
 
 
+# Add image file
+def add_file():
+    files = filedialog.askopenfilenames(title="Select image files", \
+        filetypes=(("PNG file", "*.png"), ("All file", "*.*")), \
+            initialdir=r"/")
+
+    for file in files:
+        list_file.insert(END, file)
+
+# Delete image file
+def del_file():
+    for index in reversed(list_file.curselection()):
+        list_file.delete(index)
+
+
+# Browse Save path
+def browse_dest_path():
+    selected_folder = filedialog.askdirectory()
+    if selected_folder == "":
+        return
+
+    txt_dest_path.delete(0, END)
+    txt_dest_path.insert(0, selected_folder)
+
 # file frame
 file_frame = Frame(root)
 file_frame.pack(fill="x", padx=5, pady=5)
 
-btn_add_file = Button(file_frame, text="Add Image")
+btn_add_file = Button(file_frame, text="Add Image", command=add_file)
 btn_add_file.pack(side="left")
 
-btn_del_file = Button(file_frame, text="Delete Image")
+btn_del_file = Button(file_frame, text="Delete Image", command=del_file)
 btn_del_file.pack(side="right")
 
 
@@ -35,7 +60,7 @@ path_frame.pack(fill="x", padx=5, pady=5, ipady=5)
 txt_dest_path = Entry(path_frame)
 txt_dest_path.pack(side="left", fill="x", expand=True)
 
-btn_dest_path = Button(path_frame, text="Search")
+btn_dest_path = Button(path_frame, text="Search", command=browse_dest_path)
 btn_dest_path.pack(side="right")
 
 
