@@ -7,7 +7,7 @@ root.title("Add Image Tool")
 
 # file frame
 file_frame = Frame(root)
-file_frame.pack(fill="x")
+file_frame.pack(fill="x", padx=5, pady=5)
 
 btn_add_file = Button(file_frame, text="Add Image")
 btn_add_file.pack(side="left")
@@ -18,7 +18,7 @@ btn_del_file.pack(side="right")
 
 # List frame
 list_frame = Frame(root)
-list_frame.pack(fill="both")
+list_frame.pack(fill="both", padx=5, pady=5)
 
 scrollbar = Scrollbar(list_frame)
 scrollbar.pack(side="right", fill="y")
@@ -30,7 +30,7 @@ scrollbar.config(command=list_file.yview)
 
 # Save path frame
 path_frame = LabelFrame(root, text="Save Path")
-path_frame.pack(fill="x")
+path_frame.pack(fill="x", padx=5, pady=5, ipady=5)
 
 txt_dest_path = Entry(path_frame)
 txt_dest_path.pack(side="left", fill="x", expand=True)
@@ -41,7 +41,7 @@ btn_dest_path.pack(side="right")
 
 # Option frame
 frame_option = LabelFrame(root, text="option")
-frame_option.pack()
+frame_option.pack(padx=5, pady=5, ipady=5)
 
 # Width option
 lbl_width = Label(frame_option, text="Width")
@@ -75,16 +75,16 @@ cmb_format.pack(side="left")
 
 # Progress Bar
 frame_progress = LabelFrame(root, text="Progress")
-frame_progress.pack(fill="x")
+frame_progress.pack(fill="x", padx=5, pady=5, ipady=5)
 
 p_var = DoubleVar()
 progress_bar = ttk.Progressbar(frame_progress, maximum=100, variable=p_var)
-progress_bar.pack(fill="x")
+progress_bar.pack(fill="x", padx=5, pady=5)
 
 
 # Run frame
 frame_run = Frame(root)
-frame_run.pack(fill="x")
+frame_run.pack(fill="x", padx=5, pady=5)
 
 btn_close = Button(frame_run, text="Close", command=root.quit)
 btn_close.pack(side="right")
