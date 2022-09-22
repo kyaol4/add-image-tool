@@ -1,7 +1,9 @@
+import os
 import tkinter.ttk as ttk
 import tkinter.messagebox as msgbox
 from tkinter import *
 from tkinter import filedialog
+from PIL import Image
 
 root = Tk()
 root.title("Add Image Tool")
@@ -32,20 +34,44 @@ def browse_dest_path():
     txt_dest_path.insert(0, selected_folder)
 
 
+# merge images
+def merge_image():
+    # print(list_file.get(0, END))
+    images = [Image.open(x) for x in list_file.get(0, END)]
+
+    widths, heights = zip(*(x.size for x in images))
+
+    max_width, total_height = max(widths), sum(heights)
+
+    result_img = Image.new("RGB", (max_width, total_height), (255, 255, 255))
+    y_offset = 0
+
+    for img in images:
+        result_img.paste(img, (0, y_offset))
+        y_offset += img.size[1]
+
+    dest_path = os.path.join(txt_dest_path.get(), "dong_photo.jpg")
+    result_img.save(dest_path)
+    msgbox.showinfo("Info", "Merge success")
+
+
 # When press run button
 def start():
-    print(" Width option : ", cmb_width.get())
-    print("Space option : ", cmb_space.get())
-    print("image format option : ", cmb_format.get())
+    # print(" Width option : ", cmb_width.get())
+    # print("Space option : ", cmb_space.get())
+    # print("image format option : ", cmb_format.get())
 
+    # check file list
     if list_file.size() == 0:
         msgbox.showwarning("Warning", "Add image files")
         return
 
+    # check save path
     if txt_dest_path.get() == "":
         msgbox.showwarning("Warning", "Select save path")
         return
 
+    merge_image()
 
 # file frame
 file_frame = Frame(root)
