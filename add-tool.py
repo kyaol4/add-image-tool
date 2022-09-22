@@ -1,4 +1,5 @@
 import tkinter.ttk as ttk
+import tkinter.messagebox as msgbox
 from tkinter import *
 from tkinter import filedialog
 
@@ -29,6 +30,22 @@ def browse_dest_path():
 
     txt_dest_path.delete(0, END)
     txt_dest_path.insert(0, selected_folder)
+
+
+# When press run button
+def start():
+    print(" Width option : ", cmb_width.get())
+    print("Space option : ", cmb_space.get())
+    print("image format option : ", cmb_format.get())
+
+    if list_file.size() == 0:
+        msgbox.showwarning("Warning", "Add image files")
+        return
+
+    if txt_dest_path.get() == "":
+        msgbox.showwarning("Warning", "Select save path")
+        return
+
 
 # file frame
 file_frame = Frame(root)
@@ -114,7 +131,7 @@ frame_run.pack(fill="x", padx=5, pady=5)
 btn_close = Button(frame_run, text="Close", command=root.quit)
 btn_close.pack(side="right")
 
-btn_run = Button(frame_run, text="Run")
+btn_run = Button(frame_run, text="Run", command=start)
 btn_run.pack(side="right")
 
 root.resizable(False, False)
