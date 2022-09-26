@@ -1,3 +1,4 @@
+import time
 import os
 import tkinter.ttk as ttk
 import tkinter.messagebox as msgbox
@@ -36,12 +37,42 @@ def browse_dest_path():
 
 # merge images
 def merge_image():
+    # width option
+    img_width = cmb_width.get()
+    if img_width == "Keep Original":
+        img_width = -1
+    else:
+        img_width = int(img_width)
+
+    # space option
+    img_space = cmb_space.get()
+    if img_space == "Narrow":
+        img_space = 30
+    elif img_space == "Middle":
+        img_space = 60
+    elif img_space == "Wide":
+        img_space = 90
+    else:
+        img_space = 0
+
+    # image format option
+    img_format = cmb_format.get().lower()
+
     # print(list_file.get(0, END))
     images = [Image.open(x) for x in list_file.get(0, END)]
 
-    widths, heights = zip(*(x.size for x in images))
+    image_sizes = []
+    if img_width > -1:
+        image_sizes = [(int(img_width), int(img_width * x.size[1] / x.size[0])) for x in images]
+    else:
+        image_sizes = [(x.size[0], x.size[1]) for x in images]
+
+    widths, heights = zip(*(image_sizes))
 
     max_width, total_height = max(widths), sum(heights)
+
+    if img_space > 0:
+        total_height += (img_space * (len(images) - 1))
 
     result_img = Image.new("RGB", (max_width, total_height), (255, 255, 255))
     y_offset = 0
@@ -51,6 +82,8 @@ def merge_image():
     #     y_offset += img.size[1]
 
     for idx, img in enumerate(images):
+        if img_width > -1:
+            img = img.resize(image_sizes[idx])
         result_img.paste(img, (0, y_offset))
         y_offset += img.size[1]
 
@@ -58,7 +91,9 @@ def merge_image():
         p_var.set(progress)
         progress_bar.update()
 
-    dest_path = os.path.join(txt_dest_path.get(), "dong_photo.jpg")
+    curr_time = time.strftime("_%Y%m%d_%H%M%S.")
+    file_name = "image{}".format(curr_time) + img_format
+    dest_path = os.path.join(txt_dest_path.get(), file_name)
     result_img.save(dest_path)
     msgbox.showinfo("Info", "Merge success")
 
